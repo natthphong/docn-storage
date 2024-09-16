@@ -1,0 +1,21 @@
+do:
+  spaces:
+    key: ${DO_SPACE_KEY}
+    secret: ${DO_SPACE_SECRET}
+    endpoint: ${DO_SPACE_ENDPOINT}
+    region: ${DO_SPACE_REGION}
+    bucket: ${DO_SPACE_BUCKET}
+    url:
+      exp: 10
+spring:
+  datasource:
+    url: jdbc:postgresql://natthaphong-postgresql-sgp1-do-user-17767604-0.e.db.ondigitalocean.com:25060/postgres
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  application:
+    name: poc-app
+

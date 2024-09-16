@@ -1,0 +1,56 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="EmployeeReport" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="927584e9-c6ad-4b0b-8538-3621aa7c716a">
+    <field name="employeeId" class="java.lang.Long"/>
+    <field name="firstName" class="java.lang.String"/>
+    <field name="lastName" class="java.lang.String"/>
+    <field name="company.companyCode" class="java.lang.String"/>
+    <field name="periodDate" class="java.time.LocalDateTime"/>
+    <field name="txnDate" class="java.time.LocalDateTime"/>
+    <field name="incomePrice" class="java.lang.Double"/>
+    <title height="50">
+        <element kind="staticText" uuid="ee31c473-df83-4911-bad7-a5ae11635278" x="0" y="0" width="555" height="30" fontSize="18.0" bold="true" hTextAlign="Center">
+            <text><![CDATA[Employee Income Report]]></text>
+        </element>
+    </title>
+    <columnHeader height="40">
+        <element kind="textField" uuid="bc9fdf21-4120-4526-a348-a1d5d1f08f12" x="0" y="10" width="60" height="30">
+            <expression><![CDATA["Employee ID"]]></expression>
+        </element>
+        <element kind="textField" uuid="964b74d8-27fe-45c6-bcf9-e8091dedc44a" x="70" y="10" width="100" height="30">
+            <expression><![CDATA["First Name"]]></expression>
+        </element>
+        <element kind="textField" uuid="9cb187eb-b611-46bc-a5b6-2c1df35ba473" x="180" y="10" width="100" height="30">
+            <expression><![CDATA["Last Name"]]></expression>
+        </element>
+        <element kind="textField" uuid="a7ecaa91-189b-4675-a228-0d41a1a3e0d6" x="290" y="10" width="100" height="30">
+            <expression><![CDATA["Company Code"]]></expression>
+        </element>
+        <element kind="textField" uuid="40e136ee-138f-4d4d-98f4-1d7bfc743375" x="400" y="10" width="100" height="30">
+            <expression><![CDATA["Income"]]></expression>
+        </element>
+    </columnHeader>
+    <detail>
+        <band height="30">
+            <element kind="textField" uuid="126ad822-cf4f-48e3-926c-90c4296e0355" x="0" y="0" width="60" height="20">
+                <expression><![CDATA[$F{employeeId}]]></expression>
+            </element>
+            <element kind="textField" uuid="ce7d20b4-6df1-4637-b704-f9f811882d32" x="70" y="0" width="100" height="20">
+                <expression><![CDATA[$F{firstName}]]></expression>
+            </element>
+            <element kind="textField" uuid="5d542230-6854-46b3-8f9f-1bd4f88a81f4" x="180" y="0" width="100" height="20">
+                <expression><![CDATA[$F{lastName}]]></expression>
+            </element>
+            <element kind="textField" uuid="1fdd2330-3b34-4a5a-aa51-11ed792481bd" x="290" y="0" width="100" height="20">
+                <expression><![CDATA[$F{company.companyCode}]]></expression>
+            </element>
+            <element kind="textField" uuid="5829f3c6-f93a-4776-baa6-369b995b635d" x="400" y="0" width="100" height="20">
+                <expression><![CDATA[String.format("%.2f", $F{incomePrice})]]></expression>
+            </element>
+        </band>
+    </detail>
+    <summary height="50">
+        <element kind="staticText" uuid="a2073a1f-c057-4767-b586-8f9ed2d25b91" x="0" y="10" width="555" height="20" fontSize="12.0" bold="true" hTextAlign="Right">
+            <text><![CDATA[Total Income: ]]></text>
+        </element>
+    </summary>
+</jasperReport>
