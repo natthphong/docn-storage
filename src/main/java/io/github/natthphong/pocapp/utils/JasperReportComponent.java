@@ -35,4 +35,17 @@ public class JasperReportComponent {
         return JasperExportManager.exportReportToPdf(jasperPrint);
 
     }
+
+    public void generateReport(List<?> data, Map<String, Object> parameters, String jasperFilePath,String file) throws JRException, IOException {
+
+        ClassPathResource resource = new ClassPathResource(jasperFilePath);
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(resource.getInputStream());
+
+
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+         JasperExportManager.exportReportToPdfFile(jasperPrint,file);
+
+    }
 }

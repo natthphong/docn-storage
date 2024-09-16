@@ -8,6 +8,8 @@ do:
     url:
       exp: 10
 spring:
+  profiles:
+    active: dev
   datasource:
     url: jdbc:postgresql://natthaphong-postgresql-sgp1-do-user-17767604-0.e.db.ondigitalocean.com:25060/postgres
     username: ${DB_USER}

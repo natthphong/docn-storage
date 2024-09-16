@@ -16,8 +16,7 @@ import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -45,26 +44,44 @@ public class ImageStorageService {
     }
 
 
-
     public void generatePdfTest(String companyCode) {
-        List<EmployeeEntity> employeeEntities = employeeRepository.findAllByCreateDateAndCompanyCode(LocalDate.now(),companyCode);
+        List<EmployeeEntity> employeeEntities = employeeRepository.findAllByCreateDateAndCompanyCode(LocalDate.now(), companyCode);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ZipOutputStream zos = new ZipOutputStream(byteArrayOutputStream);
         try {
             if (!employeeEntities.isEmpty()) {
                 for (EmployeeEntity employeeEntity : employeeEntities) {
                     String folder = String.format("user/%s", employeeEntity.getEmployeeId());
-                    String fileName = String.format("%s_%s.pdf", employeeEntity.getEmployeeId(),employeeEntity.getCreateDate().format(formatter));
+                    String fileName = String.format("%s_%s.pdf", employeeEntity.getEmployeeId(), employeeEntity.getCreateDate().format(formatter));
                     Map<String, Object> params = new HashMap<>();
-                    byte[] buffer = jasperReportComponent.generateReport(List.of(employeeEntity), params, "jasper/test.jasper");
                     ZipEntry zipEntry = new ZipEntry(fileName);
+                    //10pdf test total memory 35.61
+                    byte[] buffer = jasperReportComponent.generateReport(List.of(employeeEntity), params, "jasper/test.jasper");
                     zos.putNextEntry(zipEntry);
-                    writeToZip(zos, buffer, buffer.length);
+                    zos.write(buffer, 0, buffer.length);
+                    //10pdf test total memory 17.58
                     fileStorageComponent.uploadFile(buffer,"application/pdf",folder,fileName);
                     zos.closeEntry();
+
+//                    File pdfFile = File.createTempFile("report_", ".pdf");
+//                  10 pdf test total memory 36.4 using  FileTemp
+//                    jasperReportComponent.generateReport(List.of(employeeEntity), params, "jasper/test.jasper", pdfFile.getAbsolutePath());
+//                    FileInputStream fis = new FileInputStream(pdfFile);
+//
+//                    zos.putNextEntry(zipEntry);
+//                    byte[] buffer = new byte[4096];
+//                    int length;
+//                    while ((length = fis.read(buffer)) > 0) {
+//                        zos.write(buffer, 0, length);
+//                    }
+//                      10 pdf test total memory 16.86 using  FileTemp
+//                    fileStorageComponent.uploadFile(fis, fis.available(), "application/pdf", folder, fileName);
+//                    System.out.println(pdfFile);
+//                    pdfFile.delete();
+//                    zos.closeEntry();
                 }
 
-                String fileName = String.format("%s_%s.zip", companyCode,LocalDate.now().format(formatter));
+                String fileName = String.format("%s_%s.zip", companyCode, LocalDate.now().format(formatter));
                 String key = String.format("zip/%s", fileName);
                 fileStorageComponent.uploadFile(byteArrayOutputStream.toByteArray(), "application/zip", key);
                 zos.close();
@@ -94,6 +111,6 @@ public class ImageStorageService {
     }
 
     public List<String> getImages(String folder) {
-        return  fileStorageComponent.listFiles(folder);
+        return fileStorageComponent.listFiles(folder);
     }
 }
